@@ -89,5 +89,7 @@
     <script src="<?php echo assets_path() ?>/js/main.js"></script>
     <script src="<?php echo assets_path() ?>/js/custom.js"></script>
     <script src="<?php echo assets_path() ?>/js/wow.min.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
+    <!--<script src="/assets/gmap3.js?body=1" type="text/javascript"></script>-->
 </body>
 </html>
