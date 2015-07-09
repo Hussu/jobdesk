@@ -8,13 +8,20 @@
     <title>Job Desk</title>
 	
 	<!-- core CSS -->
-    <link href="<?php echo assets_path() ?>/css/bootstrap.min.css" rel="stylesheet">
-    <link href="<?php echo assets_path() ?>/css/font-awesome.min.css" rel="stylesheet">
-    <link href="<?php echo assets_path() ?>/css/animate.min.css" rel="stylesheet">
-    <link href="<?php echo assets_path() ?>/css/prettyPhoto.css" rel="stylesheet">
-    <link href="<?php echo assets_path() ?>/css/main.css" rel="stylesheet">
-    <link href="<?php echo assets_path() ?>/css/custom.css" rel="stylesheet">
-    <link href="<?php echo assets_path() ?>/css/responsive.css" rel="stylesheet">
+    <?php
+        echo $this->job->css(
+                [
+                    'bootstrap.min.css',
+                    'font-awesome.min.css',
+                    'animate.min.css',
+                    'prettyPhoto.css',
+                    'responsive.css',
+                    'custom.css',
+                    'main.css',
+                ]
+        )
+    ?>
+ 
     <!--[if lt IE 9]>
     <script src="js/html5shiv.js"></script>
     <script src="js/respond.min.js"></script>
@@ -36,6 +43,7 @@
     ?>
 
     <header id="header">
+       <?php if(!$this->session->userdata('id')){ ?>
         <div class="top-bar">
             <div class="container">
                 <div class="row">
@@ -62,7 +70,7 @@
                 </div>
             </div><!--/.container-->
         </div><!--/.top-bar-->
-
+       <?php } ?>
         <nav class="navbar navbar-inverse" style="z-index:1">
             <div class="container">
                 <div class="navbar-header">
@@ -81,23 +89,38 @@
                         <li><a href="<?php echo base_url('buy') ?>">BUY</a></li>
                         <li><a href="<?php echo base_url('sell') ?>">SELL</a></li>
                         <li><a href="<?php echo base_url('works') ?>">HOW IT WORKS</a></li>
-                        <!--li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Pages <i class="fa fa-angle-down"></i></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="blog-item.html">Blog Single</a></li>
-                                <li><a href="pricing.html">Pricing</a></li>
-                                <li><a href="404.html">404</a></li>
-                                <li><a href="shortcodes.html">Shortcodes</a></li>
-                            </ul>
-                        </li-->
                         <li><a href="<?php echo base_url('') ?>" class="btn btn-default color-black">POST JOB</a></li> 
-                        <li><a href="<?php echo base_url('user/register') ?>">SIGN UP</a></li>
                         <?php
                           $ci = & get_instance();
                           $user_id = $ci->session->userdata('id');
-                          if($user_id) { ?>
-                            <li><a href="<?php echo base_url('user/logout') ?>">LOGOUT</a></li>                        
+                          if($user_id) { 
+                              
+//                            $list = [
+//                                        '<a href="blog-item.html">DASHBOARD</a>'
+//                                    ] ;
+//                             echo ul($list);
+                              
+                              ?>
+                            
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Hi User <i class="fa fa-angle-down"></i></a>
+                                <ul class="dropdown-menu dashboard_dropdown">
+                                    <li><a href="blog-item.html"><i class="fa fa-tachometer"></i>DASHBOARD</a></li>
+                                    <li><a href="<?php echo base_url('user/profile') ?>"><i class="fa fa-user"></i>PROFILE</a></li>
+                                    <li><a href="404.html"><i class="fa fa-credit-card"></i>PAYMENT</a></li>
+                                    <li><a href="shortcodes.html"><i class="fa fa-user"></i>MY BUYER ACTIVITY</a></li>
+                                    <li><a href="shortcodes.html"><i class="fa fa-user"></i>MY SELLER ACTIVITY</a></li>
+                                    <li><a href="shortcodes.html"><i class="fa fa-gear"></i>SETTING</a></li>
+                                    <li><a href="<?php echo base_url('user/logout') ?>"><i class="fa fa-power-off"></i>LOGOUT</a></li> 
+                                    <li><a href=""><i class="fa fa-phone"></i>CUSTOMER SSUPPORT</a></li> 
+                                    <li><a href=""><i class="fa fa-question"></i>HOW IT WORKS</a></li> 
+                                </ul>
+                            </li>
+                            
+                            
+                            
                           <?php } else{ ?>
+                            <li><a href="<?php echo base_url('user/register') ?>">SIGN UP</a></li>
                             <li><a href="<?php echo base_url('user/login') ?>">LOG IN</a></li>                        
                           <?php } ?>
                     </ul>

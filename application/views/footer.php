@@ -81,15 +81,19 @@
             </div>
         </div>
     </footer><!--/#footer-->
-
-    <script src="<?php echo assets_path() ?>/js/jquery.js"></script>
-    <script src="<?php echo assets_path() ?>/js/bootstrap.min.js"></script>
-    <script src="<?php echo assets_path() ?>/js/jquery.prettyPhoto.js"></script>
-    <script src="<?php echo assets_path() ?>/js/jquery.isotope.min.js"></script>
-    <script src="<?php echo assets_path() ?>/js/main.js"></script>
-    <script src="<?php echo assets_path() ?>/js/custom.js"></script>
-    <script src="<?php echo assets_path() ?>/js/wow.min.js"></script>
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
-    <!--<script src="/assets/gmap3.js?body=1" type="text/javascript"></script>-->
+     <?php 
+        echo $this->job->script(
+                [
+                    'jquery.js',
+                    'bootstrap.min.js',
+                    'jquery.prettyPhoto.js',
+                    'jquery.isotope.min.js',
+                    'main.js',
+                    'custom.js',
+                    'wow.min.js',
+                    'autocomplete.js'
+                ]
+        ); 
+    ?>
 </body>
 </html>
