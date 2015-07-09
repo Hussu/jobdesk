@@ -200,7 +200,8 @@ if ( ! function_exists('img'))
 				}
 				else
 				{
-					$img .= ' src="'.get_instance()->config->slash_item('base_url').$v.'"';
+					$img .= ' src="'.
+                                                get_instance()->config->slash_item('base_url').$v.'"';
 				}
 			}
 			else
@@ -408,3 +409,5 @@ if ( ! function_exists('nbs'))
 		return str_repeat('&nbsp;', $num);
 	}
 }
+
+
