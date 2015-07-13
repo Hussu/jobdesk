@@ -30,6 +30,60 @@ function get_role() {
     }
 }
 
+function role(){
+   $ci = & get_instance();
+   $role = $ci->session->userdata('role');
+   if($role == 1){
+       return 'admin';
+   }elseif($role == 2){
+       return 'seller';
+   }elseif($role == 3){
+       return 'buyer';
+   }
+}
+
+function user_meta($key = ''){
+    $ci = & get_instance();
+    $id = $ci->session->userdata('id');
+    $ci->db->where('id', $id);
+    if(!empty($key)):
+        $ci->db->select($key);
+    endif;
+    $data  = $ci->db->get('users');
+    $result = $data->result_object();
+    if(!empty($key)):
+        return $result[0]->$key;
+    else:
+        return $result[0];
+    endif;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Validate Role
 function validate_role() {
     $ci = & get_instance();
@@ -120,3 +174,5 @@ function get_relation_by($select, $field, $value) {
     }
     return $result;
 }
+
+    

@@ -78,7 +78,7 @@ class User extends CI_Controller {
                     'role' => $result->role
                 );
                 $this->session->set_userdata($sess_array);
-                redirect('user/profile');
+                redirect('dashboard');
             } else {
                 $this->session->set_flashdata('error', 'Wrong email or password.');
                 redirect('user/login');
@@ -89,7 +89,7 @@ class User extends CI_Controller {
 
     public function profile() {
         validate_login();
-        $this->job->view('user/profile');
+        $this->job->view('dashboard');
     }
 
     public function logout() {
