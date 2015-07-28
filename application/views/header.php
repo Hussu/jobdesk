@@ -94,11 +94,7 @@
                           $ci = & get_instance();
                           $user_id = $ci->session->userdata('id');
                           if($user_id) { 
-                              
-//                            $list = [
-//                                        '<a href="blog-item.html">DASHBOARD</a>'
-//                                    ] ;
-//                             echo ul($list);
+                             
                               
                               ?>
                             
@@ -106,7 +102,7 @@
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Hi User <i class="fa fa-angle-down"></i></a>
                                 <ul class="dropdown-menu dashboard_dropdown">
                                     <li><a href="blog-item.html"><i class="fa fa-tachometer"></i>DASHBOARD</a></li>
-                                    <li><a href="<?php echo base_url('user/profile') ?>"><i class="fa fa-user"></i>PROFILE</a></li>
+                                    <li><a href="<?php echo base_url('profile') ?>"><i class="fa fa-user"></i>PROFILE</a></li>
                                     <li><a href="404.html"><i class="fa fa-credit-card"></i>PAYMENT</a></li>
                                     <li><a href="shortcodes.html"><i class="fa fa-user"></i>MY BUYER ACTIVITY</a></li>
                                     <li><a href="shortcodes.html"><i class="fa fa-user"></i>MY SELLER ACTIVITY</a></li>

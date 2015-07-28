@@ -91,9 +91,10 @@
                     'main.js',
                     'custom.js',
                     'wow.min.js',
-                    'autocomplete.js'
+//                    'autocomplete.js'
                 ]
         ); 
     ?>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=places"></script>
 </body>
 </html>

@@ -36,7 +36,7 @@ class User extends CI_Controller {
                }else{
                 unset($_POST['confirm_password']);
                 $_POST['password'] = md5($this->input->post('password'));
-                if ($this->global_m->insert('users', $_POST)) {redirect('');} else { redirect('user/register');}
+                if ($this->global_m->insert('users', $_POST)) {redirect('profile');} else { redirect('user/register');}
                }
                 break;
                 
