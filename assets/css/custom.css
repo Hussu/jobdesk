@@ -170,5 +170,19 @@ div.product-chooser div.product-chooser-item.selected{
     .profile-image{
         border-radius: 50% !important;
     }
-                
+              
+    
+    .panel-primary {
+    border-color: #337ab7 !important;
+}
+.panel.panel-primary {
+  border: 1px solid #337ab7;
+}
+
+.panel-primary {
+    background-color: white !important;
+}
+.panel-heading h3{
+    color: white !important;
+}
                 
