@@ -8,7 +8,6 @@ class User extends CI_Controller {
         $this->load->model('global_m');
         $this->load->library('form_validation');
     }
-
     public function account()
     {
 	$this->job->view('user/account');
