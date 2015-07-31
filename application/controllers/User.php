@@ -10,7 +10,7 @@ class User extends CI_Controller {
     }
     public function account()
     {
-	$this->job->view('user/account');
+	$this->jobdesk->view('user/account');
     }
 
     public function register() {
@@ -31,7 +31,7 @@ class User extends CI_Controller {
                 $this->form_validation->set_rules('phone', 'Phone', 'required|regex_match[/^[0-9]{10}$/]');
                 $this->form_validation->set_rules('address', 'Address', 'required');
                if ($this->form_validation->run() == FALSE){
-                   $this->job->view('user/register', $data);
+                   $this->jobdesk->view('user/register', $data);
                }else{
                 unset($_POST['confirm_password']);
                 $_POST['password'] = md5($this->input->post('password'));
@@ -47,11 +47,10 @@ class User extends CI_Controller {
                 break;
         }
         
-        
     }
 
     public function login() {
-        
+        $this->load->helper('cookie');
         $this->load->library('facebook'); // Automatically picks appId and secret from config
          $data['login_url'] = $this->facebook->getLoginUrl(array(
                     'redirect_uri' => site_url('user/register/facebook'),
@@ -63,8 +62,9 @@ class User extends CI_Controller {
         $this->form_validation->set_rules('email', 'Email Address', 'required');
         $this->form_validation->set_rules('password', 'Password', 'required');
        if ($this->form_validation->run() == FALSE){
-           $this->job->view('user/login', $data);
+           $this->jobdesk->view('user/login', $data);
        }else{
+          
             $email = $this->input->post('email');
             $password = md5($this->input->post('password'));
             $result = $this->global_m->login($email, $password);
@@ -76,8 +76,22 @@ class User extends CI_Controller {
                     'email' => $result->email,
                     'role' => $result->role
                 );
+                /******** Remember me *********/
+                if(isset($_POST['remember-me'])):
+//                print_r($_POST); die;
+                    $this->input->set_cookie(
+                            array(
+                                'name'   => 'logined',
+                                'value'  => $result->id,
+                                'expire' => '86500',
+                                'path'   => '/'
+                             )
+                    );
+                endif;
                 $this->session->set_userdata($sess_array);
-                redirect('dashboard');
+                $url = !empty($this->input->post('redirect_url'))? $this->input->post('redirect_url') : 'dashboard'; 
+                $this->session->unset_userdata('current_url');
+                redirect($url);
             } else {
                 $this->session->set_flashdata('error', 'Wrong email or password.');
                 redirect('user/login');
@@ -88,11 +102,13 @@ class User extends CI_Controller {
 
     public function profile() {
         validate_login();
-        $this->job->view('dashboard');
+        $this->jobdesk->view('dashboard');
     }
 
     public function logout() {
+        $this->load->helper('cookie');
         $this->session->sess_destroy();
+        delete_cookie('logined');
         if (validate_login()) {
             redirect('user/login');
         }

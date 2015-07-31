@@ -116,7 +116,6 @@ class Global_m extends CI_Model {
     }
     
     public function query($sql, $array = false) {
-//        echo $sql;
         $q = $this->db->query($sql);
         $data = ($array) ? $q->result_array() : $q->result_object();
         return (count($data) > 1) ? $data : $data[0];

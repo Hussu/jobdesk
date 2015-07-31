@@ -1,3 +1,4 @@
+
 <div class="main-wrapper no-margin">
     <div class="container">
         <div class="omb_login">
@@ -29,9 +30,10 @@
             </div>
             <div class="row omb_row-sm-offset-3">
                 <div class="col-xs-12 col-sm-6">
-                    <?php echo form_open('', array('class' => 'omb_loginForm', 'autocomplete' => 'off')) ?>
+                    <?php echo form_open(base_url('user/login'), array('class' => 'omb_loginForm', 'autocomplete' => 'off')) ?>
                     <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                        <?Php $url = !empty($this->session->userdata('current_url')) ? $this->session->userdata('current_url') : ''; echo form_hidden('redirect_url', $url); ?>
                         <?php echo form_input(array('class' => 'form-control', 'name' => 'email', 'value' => isset($_POST['email']) ? $_POST['email'] : '', 'placeholder' => 'email address')) ?>
                     </div>
                     <?php echo form_error('email') ?>

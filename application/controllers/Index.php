@@ -8,8 +8,8 @@ class Index extends CI_Controller {
   }
 
 	public function index()
-	{
-		$this->load->view('header');
+	{       $data['front_page'] = 123;
+		$this->load->view('header', $data);
 		$this->load->view('index/index');
 		$this->load->view('footer');
                 

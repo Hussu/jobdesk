@@ -9,7 +9,7 @@
 	
 	<!-- core CSS -->
     <?php
-        echo $this->job->css(
+        echo $this->jobdesk->css(
                 [
                     'bootstrap.min.css',
                     'font-awesome.min.css',
@@ -92,14 +92,14 @@
                         <li><a href="<?php echo base_url('') ?>" class="btn btn-default color-black">POST JOB</a></li> 
                         <?php
                           $ci = & get_instance();
-                          $user_id = $ci->session->userdata('id');
+                          $user_id = is_logged_in();
                           if($user_id) { 
                              
                               
                               ?>
                             
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Hi User <i class="fa fa-angle-down"></i></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php $name = user_meta('first_name'); echo !empty($name)? 'Hi '.$name : 'Hi User' ?> <i class="fa fa-angle-down"></i></a>
                                 <ul class="dropdown-menu dashboard_dropdown">
                                     <li><a href="<?php echo base_url('dashboard') ?>"><i class="fa fa-tachometer"></i>DASHBOARD</a></li>
                                     <li><a href="<?php echo base_url('profile') ?>"><i class="fa fa-user"></i>PROFILE</a></li>
@@ -125,7 +125,7 @@
         </nav><!--/nav-->
 		
     </header><!--/header-->
-
+    <?php if(!empty($front_page)): ?>
     <section id="main-slider" class="no-margin">
         <div class="carousel slide">
             <ol class="carousel-indicators">
@@ -203,4 +203,6 @@
         <a class="next hidden-xs" href="#main-slider" data-slide="next">
             <i class="fa fa-chevron-right"></i>
         </a>
-    </section><!--/#main-slider-->
+    </section>
+    <?php endif; ?>
+    <!--/#main-slider-->

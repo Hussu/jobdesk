@@ -13,11 +13,23 @@ function assets_path($path = '') {
 // Validate login
 function validate_login() {
     $ci = & get_instance();
+    $ci->load->library('facebook'); // Automatically picks appId and secret from config
+         $data['login_url'] = $ci->facebook->getLoginUrl(array(
+                    'redirect_uri' => site_url('user/register/facebook'),
+                    'scope' => array("email") // permissions here
+                ));
     $user_id = $ci->session->userdata('id');
+    if(empty($user_id)):
+        $user_id = $_COOKIE['logined'];
+    endif;
+    
     if (isset($user_id) && !empty($user_id)) {
         return $user_id;
     } else {
-        redirect('index');
+        $data['current_url'] = current_url();
+        $ci->session->set_userdata(array('current_url' => current_url()));
+//        $ci->job->view('user/login', $data);
+        redirect('user/login');
     }
 }
 
@@ -33,6 +45,12 @@ function get_role() {
 function role(){
    $ci = & get_instance();
    $role = $ci->session->userdata('role');
+   
+   if(empty($role)):
+     $id = $_COOKIE['logined'];
+       $role = user_meta('role');
+   endif;
+   
    if($role == 1){
        return 'admin';
    }elseif($role == 2){
@@ -45,6 +63,9 @@ function role(){
 function user_meta($key = ''){
     $ci = & get_instance();
     $id = $ci->session->userdata('id');
+    if(empty($id)):
+        $id = isset($_COOKIE['logined']) ? $_COOKIE['logined'] : '' ;
+    endif;
     $ci->db->where('id', $id);
     if(!empty($key)):
         $ci->db->select($key);
@@ -52,11 +73,30 @@ function user_meta($key = ''){
     $data  = $ci->db->get('users');
     $result = $data->result_object();
     if(!empty($key)):
-        return $result[0]->$key;
+        if(!empty($result)):
+           return $result[0]->$key;
+        endif;
     else:
-        return $result[0];
+        if(!empty($result)):
+            return $result[0];
+        endif;
     endif;
 }
+
+function is_logged_in() {
+    $ci = & get_instance();
+    $id = $ci->session->userdata('id');
+    if(empty($id)):
+        $id = isset($_COOKIE['logined']) ? $_COOKIE['logined'] : '' ;
+    endif;
+    if(!empty($id)):
+        return $id;
+    else:
+        return FALSE;
+    endif;
+}
+
+
 
 
 

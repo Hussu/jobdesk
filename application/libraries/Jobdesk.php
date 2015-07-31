@@ -1,6 +1,6 @@
 <?php
 
-class Job {
+class Jobdesk{
 
     private $ci;
 
@@ -9,8 +9,12 @@ class Job {
     }
 
     public function view($file, $data = array()) {
+        
         $role = $this->ci->session->userdata('role');
-
+        if (empty($role)):
+            $id = isset($_COOKIE['logined']) ? $_COOKIE['logined'] : '';
+            $role = user_meta('role');
+        endif;
         if ($role == '2') {
             $folder = 'user/seller/';
         } elseif ($role == '3') {
@@ -20,8 +24,8 @@ class Job {
         }
         $loader = $folder . $file;
 
-        $header = $folder."header";
-        $footer = $folder."footer";
+        $header = $folder . "header";
+        $footer = $folder . "footer";
 
         $this->ci->load->view($header, $data);
         $this->ci->load->view($loader, $data);

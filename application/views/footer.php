@@ -82,7 +82,7 @@
         </div>
     </footer><!--/#footer-->
      <?php 
-        echo $this->job->script(
+        echo $this->jobdesk->script(
                 [
                     'jquery.js',
                     'bootstrap.min.js',
