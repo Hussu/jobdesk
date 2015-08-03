@@ -59,7 +59,11 @@ function fillInAddress() {
   for (var i = 0; i < place.address_components.length; i++) {
     var addressType = place.address_components[i].types[0];
     if (componentForm[addressType]) {
+//        if(i+1 == place.address_components.length){
+//            console.log(place.address_components[i].long_name);
+//        }
       var val = place.address_components[i][componentForm[addressType]];
+//      alert(val);
 //      document.getElementById(addressType).value = val;
     }
   }
@@ -82,3 +86,5 @@ function geolocate() {
     });
   }
 }
+
+

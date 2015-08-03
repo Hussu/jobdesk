@@ -175,14 +175,110 @@ div.product-chooser div.product-chooser-item.selected{
     .panel-primary {
     border-color: #337ab7 !important;
 }
-.panel.panel-primary {
-  border: 1px solid #337ab7;
+.dashboard_panel {
+  border: 1px solid #337ab7 !important;
 }
 
-.panel-primary {
+.dashboard_panel {
     background-color: white !important;
 }
-.panel-heading h3{
+.dashboard_panel h3{
     color: white !important;
 }
-                
+
+.experience_level{
+    font-size: 14px;
+    text-align: center;
+    color: #7a7a7a;
+}
+
+.experience_panel{
+    border : 1px solid #7a7a7a !important;
+    cursor: pointer;
+    background-color: white;
+}
+
+.experience_panel  .panel-body {
+    font-size: 13px
+}
+
+.experience_panel .panel-heading{
+    border-bottom: 1px solid transparent;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom: 1px solid #7a7a7a !important;
+    background: white;
+}
+
+.experience_level_heading_selected{
+    background-color: rgba(0, 0, 0, 0.39) !important;
+    color: white !important;
+}
+.job_attachment > input {
+  border: 2px dashed #7a7a7a;
+  border-radius: 4px;
+  padding: 22px 253px;
+  opacity: 0;
+}
+.job_attachment{
+  border: 2px dashed #7a7a7a;
+  border-radius: 4px;
+  text-align: center;
+}
+.job_attachment > span {
+  left: 35%;
+  margin-top: 3%;
+  position: absolute;
+}
+.error {
+  color: red;
+}
+
+.col-md-12.single_job {
+  background: rgba(0, 0, 0, 0.04) none repeat scroll 0 0;
+  padding: 17px 0 18px 2px;
+  border-bottom: 1px solid #e5e5e5;
+}
+.single_job :hover{
+  /*background: rgba(0, 0, 0, 0.04) none repeat scroll 0 0;*/
+}
+.job_title {
+  font-size: 17px;
+}
+
+.btn-proposal {
+  border: 1px solid #828282 !important;
+  color: #828282 !important;
+  font-size: 16px !important;
+  padding: 5px 38px !important;
+  background:none;
+}
+.btn-proposal:hover{
+  border: 1px solid white !important;
+  color: white !important;
+  background:#828282 !important;
+}
+
+.job_exp {
+  font-size: 27px;
+  font-weight: bold;
+  float: right;margin-right: 11px
+}
+
+.browse_job_user_img{
+    border-radius: 4px;
+    margin-right: 6px;
+    width: 41px;
+}
+.browse-p{
+    margin-top: 20px
+}
+.browse-a{
+    margin-top: 12px
+}
+.categories_ul li a{
+    color: #4E4E4E;
+}
+.act{
+    color: #c52d2f !important;
+}
