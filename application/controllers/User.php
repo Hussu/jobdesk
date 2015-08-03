@@ -5,7 +5,6 @@ class User extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->model('global_m');
         $this->load->library('form_validation');
     }
     public function account()
@@ -23,21 +22,23 @@ class User extends CI_Controller {
                     'scope' => array("email") // permissions here
                 ));
                 $this->form_validation->set_error_delimiters('<span class="help-block">', '</span>');
-                $this->form_validation->set_rules('first_name', 'First Name', 'required');
-                $this->form_validation->set_rules('last_name', 'Last Name', 'required');
-                $this->form_validation->set_rules('email', 'Email Address', 'required|valid_email|is_unique[users.email]');
-                $this->form_validation->set_rules('password', 'Password', 'required|min_length[5]');
-                $this->form_validation->set_rules('confirm_password', 'Confirm Password', 'required|matches[password]');
-                $this->form_validation->set_rules('phone', 'Phone', 'required|regex_match[/^[0-9]{10}$/]');
-                $this->form_validation->set_rules('address', 'Address', 'required');
-               if ($this->form_validation->run() == FALSE){
+                if ($this->form_validation->run('signup') == FALSE){
                    $this->jobdesk->view('user/register', $data);
-               }else{
+                }else{
                 unset($_POST['confirm_password']);
                 $_POST['password'] = md5($this->input->post('password'));
-                if ($this->global_m->insert('users', $_POST)) {redirect('profile');} else { redirect('user/register');}
+                if ($result = $this->global_m->insert('users', $_POST)) {
+                    $sess_array = array(
+                            'id' => $result,
+                            'username' => $this->input->post('first_name') . ' ' .$this->input->post('last_name'),
+                            'email' => $this->input->post('email'),
+                            'role' => 3
+                        );
+                    $this->session->set_userdata($sess_array);
+                    redirect('profile');
+                } else { redirect('user/register');}
                }
-                break;
+            break;
                 
             case 'facebook':
                    $data = $this->global_m->fb_register();
@@ -89,7 +90,7 @@ class User extends CI_Controller {
                     );
                 endif;
                 $this->session->set_userdata($sess_array);
-                $url = !empty($this->input->post('redirect_url'))? $this->input->post('redirect_url') : 'dashboard'; 
+                $url = !empty($_POST['redirect_url'])? $_POST['redirect_url'] : 'dashboard'; 
                 $this->session->unset_userdata('current_url');
                 redirect($url);
             } else {

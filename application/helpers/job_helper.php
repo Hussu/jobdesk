@@ -20,7 +20,7 @@ function validate_login() {
                 ));
     $user_id = $ci->session->userdata('id');
     if(empty($user_id)):
-        $user_id = $_COOKIE['logined'];
+        $user_id = !empty($_COOKIE['logined']) ? $_COOKIE['logined'] : '';
     endif;
     
     if (isset($user_id) && !empty($user_id)) {
@@ -72,15 +72,18 @@ function user_meta($key = ''){
     endif;
     $data  = $ci->db->get('users');
     $result = $data->result_object();
-    if(!empty($key)):
-        if(!empty($result)):
-           return $result[0]->$key;
+    if(!empty($id)){
+        
+        if(!empty($key)):
+            if(!empty($result)):
+               return $result[0]->$key;
+            endif;
+        else:
+            if(!empty($result)):
+                return $result[0];
+            endif;
         endif;
-    else:
-        if(!empty($result)):
-            return $result[0];
-        endif;
-    endif;
+    }
 }
 
 function is_logged_in() {

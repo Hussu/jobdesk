@@ -13,7 +13,7 @@ class Jobdesk{
         $role = $this->ci->session->userdata('role');
         if (empty($role)):
             $id = isset($_COOKIE['logined']) ? $_COOKIE['logined'] : '';
-            $role = user_meta('role');
+             $role = user_meta('role'); 
         endif;
         if ($role == '2') {
             $folder = 'user/seller/';
