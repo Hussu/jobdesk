@@ -262,7 +262,15 @@ div.product-chooser div.product-chooser-item.selected{
 .job_exp {
   font-size: 27px;
   font-weight: bold;
-  float: right;margin-right: 11px
+  /*float: right;*/
+  margin-right: 11px
+}
+
+.job_price{
+  font-size: 27px;
+  font-weight: bold;
+  float: right;
+  margin-right: 11px
 }
 
 .browse_job_user_img{
@@ -281,4 +289,8 @@ div.product-chooser div.product-chooser-item.selected{
 }
 .act{
     color: #c52d2f !important;
+}
+.nav-active{
+    color: black    ;
+    background-color: #eee !important;
 }

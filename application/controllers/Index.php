@@ -8,10 +8,15 @@ class Index extends CI_Controller {
   }
 
 	public function index()
-	{       $data['front_page'] = 123;
-		$this->load->view('header', $data);
-		$this->load->view('index/index');
-		$this->load->view('footer');
+	{    
+            if(is_logged_in()){
+                redirect('dashboard');
+            }
+            
+            $data['front_page'] = 123;
+            $this->load->view('header', $data);
+            $this->load->view('index/index');
+            $this->load->view('footer');
                 
 	}
 }
