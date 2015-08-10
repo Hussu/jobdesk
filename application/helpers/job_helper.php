@@ -218,4 +218,12 @@ function get_relation_by($select, $field, $value) {
     return $result;
 }
 
+
+function days_left($date){
+    $cur_date = new DateTime();
+    $now =  $cur_date->getTimestamp();
+    $new =  $now -  strtotime((string) $date);
+   echo date('d', $new);
+//    echo $new;
+}
     

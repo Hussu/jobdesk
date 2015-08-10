@@ -259,6 +259,19 @@ div.product-chooser div.product-chooser-item.selected{
   background:#828282 !important;
 }
 
+.btn-proposal-inverse{
+  border: 1px solid white !important;
+  color: white !important;
+  background:#828282;
+}
+.btn-proposal-inverse:hover{
+  border: 1px solid #828282 !important;
+  color: #828282 !important;
+  /*font-size: 16px !important;*/
+  /*padding: 5px 38px !important;*/
+  background:white !important;
+}
+
 .job_exp {
   font-size: 27px;
   font-weight: bold;

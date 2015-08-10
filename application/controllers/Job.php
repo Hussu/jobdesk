@@ -170,9 +170,28 @@ Class Job extends CI_Controller{
              echo json_encode($result_array); 
     }
     
-    public function detail($slug) {
-        $job = $this->Job_m->query('select * from job where slug = "'.$slug.'"');
-        $this->jobdesk->view('job/detail', compact('job'));
-        print_r($job);
+    public function detail($slug = '') {
+        if($this->input->post('detail')){
+            $_POST['user_id'] = user_meta('id');
+            if(!$this->Job_m->query('select * from proposals where job_id = "'.$this->input->post('job_id').'" and user_id = "'.$_POST['user_id'].'"')){
+             if($this->Job_m->insert('proposals', $_POST)){
+                $this->session->set_flashdata('class', 'success');
+                $this->session->set_flashdata('proposal_success', 'Proposal has been submitted Successfully');
+               redirect('job/detail/'.$this->input->post('job_slug'));
+             }
+            }else{
+                $this->session->set_flashdata('class', 'danger');
+                $this->session->set_flashdata('proposal_success', 'You have already subimmited proposal for this job');
+               redirect('job/detail/'.$this->input->post('job_slug'));
+            }
+        }
+        if(!empty($slug)):
+            $job = $this->Job_m->query('select * from job where slug = "'.$slug.'"');
+            $this->jobdesk->view('job/detail', compact('job'));
+        endif;
+    }
+    
+    public function proposal() {
+        
     }
 }
