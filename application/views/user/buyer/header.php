@@ -44,7 +44,7 @@
     ?>
 
     <header id="header">
-       <?php if(!$this->session->userdata('id')){ ?>
+       <?php if(!$this->session->userdata('jodbesk_id')){ ?>
         <div class="top-bar">
             <div class="container">
                 <div class="row">
@@ -102,7 +102,7 @@
                                     <li><a href="<?php echo base_url('/dashboard') ?>"><i class="fa fa-tachometer"></i>DASHBOARD</a></li>
                                     <li><a href="<?php echo base_url('/profile') ?>"><i class="fa fa-user"></i>PROFILE</a></li>
                                     <li><a href="404.html"><i class="fa fa-credit-card"></i>PAYMENT</a></li>
-                                    <li><a href="shortcodes.html"><i class="fa fa-user"></i>MY BUYER ACTIVITY</a></li>
+                                    <li><a href="<?php echo base_url('job/posted_jobs') ?>"><i class="fa fa-user"></i>MY BUYER ACTIVITY</a></li>
                                     <li><a href="shortcodes.html"><i class="fa fa-user"></i>MY SELLER ACTIVITY</a></li>
                                     <li><a href="shortcodes.html"><i class="fa fa-gear"></i>SETTING</a></li>
                                     <li><a href="<?php echo base_url('user/logout') ?>"><i class="fa fa-power-off"></i>LOGOUT</a></li> 

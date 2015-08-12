@@ -14,6 +14,8 @@ Class Dashboard extends CI_Controller{
     public function index(){
         $this->load->helper('text');
         $this->load->model('Dashboard_m');
+        $id = user_meta('id');
+        $data['posted_jobs'] = $this->Dashboard_m->query("select count(*)as total from job where user_id = $id");
         $data['hourlies_data'] = $this->Dashboard_m->get_trending_hourlies();
         $this->jobdesk->view('dashboard', $data);
     }

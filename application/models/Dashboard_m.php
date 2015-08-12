@@ -16,6 +16,16 @@ Class Dashboard_m extends CI_Model{
          $result = $query->result_object();
          return $result;
     }
+    
+     public function query($sql, $array = false) {
+        $q = $this->db->query($sql);
+        $data = ($array) ? $q->result_array() : $q->result_object();
+        if(!empty($data)):
+            return (count($data) > 1) ? $data : $data[0];
+        else:
+            return FALSE;
+        endif;
+    }
 }
 
 /* 

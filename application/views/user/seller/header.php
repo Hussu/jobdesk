@@ -43,7 +43,7 @@
     ?>
 
     <header id="header">
-       <?php if(!$this->session->userdata('id')){ ?>
+       <?php if(!$this->session->userdata('jodbesk_id')){ ?>
         <div class="top-bar">
             <div class="container">
                 <div class="row">
@@ -92,7 +92,7 @@
                         <li><a href="<?php echo base_url('') ?>" class="btn btn-default color-black">POST JOB</a></li> 
                         <?php
                           $ci = & get_instance();
-                          $user_id = $ci->session->userdata('id');
+                          $user_id = $ci->session->userdata('jodbesk_id');
                           if($user_id) { 
                               
 //                            $list = [

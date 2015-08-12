@@ -307,3 +307,10 @@ div.product-chooser div.product-chooser-item.selected{
     color: black    ;
     background-color: #eee !important;
 }
+
+.single-proposal {
+  background: rgba(0, 0, 0, 0.03) none repeat scroll 0 0;
+  margin-bottom: 21px;
+  padding-bottom: 20px;
+  padding-top: 17px;
+}

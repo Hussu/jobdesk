@@ -19,7 +19,7 @@ Class Job extends CI_Controller{
         if($this->form_validation->run('postjob') == false){
         }else{
             $_POST['job']['user_id'] = user_meta('id');
-             $_POST['slug'] = str_replace(' ', '-', $_POST['job']['title'].'-'.rand(1, 1000));
+              $_POST['job']['slug'] = str_replace(' ', '-', $_POST['job']['title'].'-'.rand(1, 1000)); 
             if($this->Job_m->insert('job', $_POST['job'])){
                 $this->session->set_flashdata('job_success_page', 'Congratulations Job Posted Successfully');
                 redirect('job/post');
@@ -75,7 +75,7 @@ Class Job extends CI_Controller{
                  $html .= 
                             '<div class="col-md-12 single_job">   
                                 <div class="col-md-12">
-                                    <div class="col-md-10"><a href="" class="job_title">'.$value->title.'</a></div>
+                                    <div class="col-md-10"><a href="detail/'.$value->slug.'" class="job_title">'.$value->title.'</a></div>
                                     <div class="col-md-2 ">
                                         <span class="">'.$type.'</span>
                                     </div>
@@ -100,7 +100,7 @@ Class Job extends CI_Controller{
                                     </div>
                                     <div class="col-md-3"><p class="browse-p">Posted '. timespan(human_to_unix($value->created_at), time(), 1) . " ago".'</p></div>
                                     <div class="col-md-2"><p class="browse-p">Proposals 2</p></div>
-                                    <div class="col-md-4"><p class="browse-a"><a href="#" class="bnt btn-lg btn-primary btn-proposal "> SEND PROPOSAL </a></p></div>
+                                    <div class="col-md-4"><p class="browse-a"><a href="detail/'.$value->slug.'" class="bnt btn-lg btn-primary btn-proposal "> SEND PROPOSAL </a></p></div>
                                 </div>
                             </div>';
                  
@@ -130,7 +130,7 @@ Class Job extends CI_Controller{
                  $html .= 
                             '<div class="col-md-12 single_job">   
                                 <div class="col-md-12">
-                                    <div class="col-md-10"><a href="" class="job_title">'.$value->title.'</a></div>
+                                    <div class="col-md-10"><a href="detail/'.$value->slug.'" class="job_title">'.$value->title.'</a></div>
                                     <div class="col-md-2 ">
                                         <span class="">'.$type.'</span>
                                     </div>
@@ -155,7 +155,7 @@ Class Job extends CI_Controller{
                                     </div>
                                     <div class="col-md-3"><p class="browse-p">Posted '. timespan(human_to_unix($value->created_at), time(), 1) . " ago".'</p></div>
                                     <div class="col-md-2"><p class="browse-p">Proposals 2</p></div>
-                                    <div class="col-md-4"><p class="browse-a"><a href="#" class="bnt btn-lg btn-primary btn-proposal "> SEND PROPOSAL </a></p></div>
+                                    <div class="col-md-4"><p class="browse-a"><a href="detail/'.$value->slug.'" class="bnt btn-lg btn-primary btn-proposal "> SEND PROPOSAL </a></p></div>
                                 </div>
                             </div>';
                  
@@ -186,7 +186,7 @@ Class Job extends CI_Controller{
             }
         }
         if(!empty($slug)):
-            $job = $this->Job_m->query('select * from job where slug = "'.$slug.'"');
+            $job = $this->Job_m->query('select * from job where slug = "'.$slug.'" limit 1');
             $this->jobdesk->view('job/detail', compact('job'));
         endif;
     }
@@ -194,4 +194,28 @@ Class Job extends CI_Controller{
     public function proposal() {
         
     }
+    
+    
+    public function posted_jobs(){
+       $user_data = user_meta();
+       $posted_jobs =  $this->Job_m->get_posted_job();
+       $this->jobdesk->view('job/posted_jobs', compact('posted_jobs', 'user_data'));
+    }
+    
+     /* ****** view posted ******* */
+    public function view($slug = ''){
+        $this->load->helper('text');
+        if(!empty($_POST['user_id'])){
+            $user_id = $_POST['user_id'];
+            $job_id = $_POST['job_id'];
+            $this->Job_m->update('job', array('status' => 'ongoing', 'assign_to' => $user_id), 'id', $job_id);
+        }
+        if(!empty($slug)):
+            $job = $this->Job_m->query('select * from job where slug = "'.$slug.'"');
+            $proposals = $this->Job_m->get_proposals($slug);
+            $this->jobdesk->view('job/view', compact('job', 'proposals'));
+        endif;
+        
+    }
+    
 }

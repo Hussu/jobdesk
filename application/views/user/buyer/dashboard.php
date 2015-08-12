@@ -72,7 +72,7 @@
                             <li><hr></li>
                             <li><a href="#">Payments </a></li>
                             <li><hr></li>
-                            <li><a href="#">Jobs I posted </a></li>
+                            <li><a href="<?php echo base_url() ?>job/posted_jobs">Jobs I posted </a>(<?php echo $posted_jobs->total ?>)</li>
                             <li><hr></li>
                             <li><a href="#">Hourlies I bought </a></li>
                             <li><hr></li>

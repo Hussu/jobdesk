@@ -29,7 +29,7 @@ class User extends CI_Controller {
                 $_POST['password'] = md5($this->input->post('password'));
                 if ($result = $this->global_m->insert('users', $_POST)) {
                     $sess_array = array(
-                            'id' => $result,
+                            'jobdesk_id' => $result,
                             'username' => $this->input->post('first_name') . ' ' .$this->input->post('last_name'),
                             'email' => $this->input->post('email'),
                             'role' => 3
@@ -72,7 +72,7 @@ class User extends CI_Controller {
             $sess_array = array();
             if ($result) {
                 $sess_array = array(
-                    'id' => $result->id,
+                    'jodbesk_id' => $result->id,
                     'username' => $result->first_name . ' ' . $result->last_name,
                     'email' => $result->email,
                     'role' => $result->role

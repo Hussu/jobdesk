@@ -87,7 +87,7 @@ class Global_m extends CI_Model {
                 $data = $this->facebook->api('/me');
                     if ($result = $this->get('users', 'email', $data['email'])) {
                         $sess_array = array(
-                        'id' => $result[0]->id,
+                        'jodbesk_id' => $result[0]->id,
                         'username' => $result[0]->first_name . ' ' . $result[0]->last_name,
                         'email' => $result[0]->email,
                         'role' => $result[0]->role
@@ -98,7 +98,7 @@ class Global_m extends CI_Model {
                     $insertData = array('email' => $data['email'], 'first_name' => $data['first_name'], 'last_name' => $data['last_name']);
                     if ($insertID = $this->insert('users', $insertData)) {
                         $sess_array = array(
-                            'id' => $insertID,
+                            'jodbesk_id' => $insertID,
                             'username' => $data['first_name'] . ' ' . $data['last_name'],
                             'email' => $data['email'],
                             'role' => '',

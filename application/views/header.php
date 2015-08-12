@@ -43,7 +43,7 @@
     ?>
 
     <header id="header">
-       <?php if(!$this->session->userdata('id')){ ?>
+       <?php if(!$this->session->userdata('jodbesk_id')){ ?>
         <div class="top-bar">
             <div class="container">
                 <div class="row">

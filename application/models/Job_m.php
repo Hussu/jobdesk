@@ -27,12 +27,15 @@ Class Job_m extends CI_Model{
     
     public function browse_jobs(){
         $id = user_meta('id');
-        $this->db->select("job.*, users.first_name, users.last_name, users.profile_image, users.address, users.id");
+        $this->db->select("job.*, users.first_name, users.last_name, users.profile_image, users.address, users.id as user_id");
         $this->db->from('job');
+        $this->db->where('job.assign_to', 0);
+//        $this->db->join('proposals', 'proposals.job_id = job.id');
         $this->db->join('users', 'job.user_id = users.id');
         $this->db->order_by('job.id', 'DESC');
          $this->db->limit(10);
         $result =  $this->db->get();
+//        echo $this->db->last_query(); die;
         if(!empty($result)):
             $data = $result->result_object();
             return $data;
@@ -86,4 +89,51 @@ Class Job_m extends CI_Model{
              return false;
          }   
     }
+    
+    public function get_posted_job(){
+        $this->db->where('user_id', user_meta('id'));
+        $this->db->order_by('id', 'DESC');
+        $query = $this->db->get('job');
+        $result = $query->result_object();
+         if(!empty($result)){
+             return  $result;
+             
+         }else{
+             return false;
+         } 
+    }
+    
+     public function get_proposals($slug){
+         $this->db->select("proposals.*, users.first_name, users.last_name, users.profile_image, users.address, users.id as user_id");
+         $this->db->from('proposals');
+         $this->db->where('job_slug', $slug);
+         $this->db->join('users', 'proposals.user_id = users.id');
+         $this->db->order_by('proposals.id', 'DESC');
+         $query = $this->db->get();
+         $result = $query->result_object();
+         
+         if(!empty($result)){
+             return  $result;
+             
+         }else{
+             return false;
+         }   
+    }
+    
+     public function update($tablename, $data_array, $where_key, $where_val) {
+        if (is_array($where_val)) {
+            $this->db->where_in($where_key, $where_val);
+        } else {
+            $this->db->where($where_key, $where_val);
+        }
+
+        if ($id = $this->db->update($tablename, $data_array)) {
+            $result = $id;
+        } else {
+            $result = false;
+        }
+        return $result;
+    }
+    
+   
 }

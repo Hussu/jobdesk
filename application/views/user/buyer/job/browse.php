@@ -1,4 +1,4 @@
-<img class="loading" src="<?php echo assets_path('images/loading.gif')?>" style="bottom: 0;left: 0;margin: auto;position: absolute;right: 0;top: 0;z-index: 9999; display:none" >
+ <img class="loading" src="<?php echo assets_path('images/loading.gif')?>" style="bottom: 0;left: 0;margin: auto;position: absolute;right: 0;top: 0;z-index: 9999; display:none" >
 <div class="main-wrapper" style=" background-color: rgba(0, 0, 0, 0.6);">
     <div class="container">
         <h2>.</h2>
@@ -76,7 +76,7 @@
                         foreach($jobs as $key => $value): ?>
                             <div class="col-md-12 single_job">
                                 <div class="col-md-12">
-                                    <div class="col-md-10"><a href="<?php echo $value->slug ?>" class="job_title"><?php echo $value->title ?></a></div>
+                                    <div class="col-md-10"><a href="detail/<?php echo $value->slug ?>" class="job_title"><?php echo $value->title ?></a></div>
                                     <div class="col-md-2 ">
                                         <span class=""><?php echo $value->type == 'fixed_type'  ? 'FIXED PRICE' : 'PER HOUR'; ?></span>
                                     </div>
@@ -101,7 +101,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-3"><p class="browse-p">Posted <?php  echo timespan(human_to_unix($value->created_at), time(), 1) . ' ago'; ?></p></div>
-                                    <div class="col-md-2"><p class="browse-p">Proposals 2</p></div>
+                                    <div class="col-md-2"><p class="browse-p">Proposals <?php echo total_proposals($value->id) ?></p></div>
                                     <div class="col-md-4"><p class="browse-a"><a href="detail/<?php echo $value->slug ?>" class="bnt btn-lg btn-primary btn-proposal "> SEND PROPOSAL </a></p></div>
                                 </div>
                             </div>

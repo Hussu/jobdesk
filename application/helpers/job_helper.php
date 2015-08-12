@@ -18,7 +18,7 @@ function validate_login() {
                     'redirect_uri' => site_url('user/register/facebook'),
                     'scope' => array("email") // permissions here
                 ));
-    $user_id = $ci->session->userdata('id');
+    $user_id = $ci->session->userdata('jodbesk_id');
     if(empty($user_id)):
         $user_id = !empty($_COOKIE['logined']) ? $_COOKIE['logined'] : '';
     endif;
@@ -62,7 +62,7 @@ function role(){
 
 function user_meta($key = ''){
     $ci = & get_instance();
-    $id = $ci->session->userdata('id');
+    $id = $ci->session->userdata('jodbesk_id');
     if(empty($id)):
         $id = isset($_COOKIE['logined']) ? $_COOKIE['logined'] : '' ;
     endif;
@@ -88,7 +88,7 @@ function user_meta($key = ''){
 
 function is_logged_in() {
     $ci = & get_instance();
-    $id = $ci->session->userdata('id');
+    $id = $ci->session->userdata('jodbesk_id');
     if(empty($id)):
         $id = isset($_COOKIE['logined']) ? $_COOKIE['logined'] : '' ;
     endif;
@@ -98,34 +98,6 @@ function is_logged_in() {
         return FALSE;
     endif;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // Validate Role
 function validate_role() {
@@ -141,7 +113,7 @@ function validate_role() {
 // Validate login
 function validate_login2() {
     $ci = & get_instance();
-    $user_id = $ci->session->userdata('id');
+    $user_id = $ci->session->userdata('jodbesk_id');
     echo $user_name = $ci->session->userdata('user_name');
     if (isset($user_name) && !empty($user_name)) {
         redirect('admin/home');
@@ -222,8 +194,39 @@ function get_relation_by($select, $field, $value) {
 function days_left($date){
     $cur_date = new DateTime();
     $now =  $cur_date->getTimestamp();
-    $new =  $now -  strtotime((string) $date);
-   echo date('d', $new);
+//    echo $now.'---'.strtotime((string) $date); die;
+    $new =  ($now) -  (strtotime((string) $date));
+//    echo $new; die;
+    return $left = date('t') - date('d', $new);
 //    echo $new;
 }
+
+
+function total_proposals($id){
+    $ci = & get_instance();
+    $ci->db->where('job_id', $id);
+    $ci->db->from('proposals');
+    return $ci->db->count_all_results();
+//    echo $ci->db->last_query(); die;
     
+}
+    
+function get_user_data($id, $key  = ''){
+    $ci = & get_instance();
+    $ci->db->where('id', $id);
+    if(!empty($key)):
+        $ci->db->select($key);
+    endif;
+    $data  = $ci->db->get('users');
+    $result = $data->result_object();
+        if(!empty($key)):
+            if(!empty($result)):
+               return $result[0]->$key;
+            endif;
+        else:
+            if(!empty($result)):
+                return $result[0];
+            endif;
+        endif;
+    
+}
