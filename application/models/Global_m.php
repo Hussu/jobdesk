@@ -87,7 +87,7 @@ class Global_m extends CI_Model {
                 $data = $this->facebook->api('/me');
                     if ($result = $this->get('users', 'email', $data['email'])) {
                         $sess_array = array(
-                        'jodbesk_id' => $result[0]->id,
+                        'jobdesk_id' => $result[0]->id,
                         'username' => $result[0]->first_name . ' ' . $result[0]->last_name,
                         'email' => $result[0]->email,
                         'role' => $result[0]->role
@@ -98,7 +98,7 @@ class Global_m extends CI_Model {
                     $insertData = array('email' => $data['email'], 'first_name' => $data['first_name'], 'last_name' => $data['last_name']);
                     if ($insertID = $this->insert('users', $insertData)) {
                         $sess_array = array(
-                            'jodbesk_id' => $insertID,
+                            'jobdesk_id' => $insertID,
                             'username' => $data['first_name'] . ' ' . $data['last_name'],
                             'email' => $data['email'],
                             'role' => '',
@@ -119,6 +119,31 @@ class Global_m extends CI_Model {
         $q = $this->db->query($sql);
         $data = ($array) ? $q->result_array() : $q->result_object();
         return (count($data) > 1) ? $data : $data[0];
+    }
+
+    public function twitter($userid, $username){
+        $this->db->where('twitter_id', $userid);
+        $query = $this->db->get('users');
+        if($query->num_rows > 0){
+           $data =  $query->result_object();
+            $sess_array = array(
+                        'jobdesk_id' => $data[0]->id,
+                        'username' => $data[0]->first_name,
+                        //'email' => $data['email'],
+                        'role' => 3,
+                    );
+           $this->session->set_userdata($sess_array);
+        }else{
+            if($this->db->insert('users', array('twitter_id' => $userid, 'first_name' => $username))){
+                $sess_array = array(
+                            'jobdesk_id' => $this->db->insert_id(),
+                            'username' => $username,
+                            //'email' => $data['email'],
+                            'role' => 3,
+                        );
+               $this->session->set_userdata($sess_array);
+            }
+        }
     }
 
 }

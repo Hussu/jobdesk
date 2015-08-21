@@ -18,7 +18,7 @@ Class Job extends CI_Controller{
         $this->form_validation->set_error_delimiters('<p class=error>', '</p>');
         if($this->form_validation->run('postjob') == false){
         }else{
-            $_POST['job']['user_id'] = user_meta('id');
+             $_POST['job']['user_id'] = user_meta('id');
               $_POST['job']['slug'] = str_replace(' ', '-', $_POST['job']['title'].'-'.rand(1, 1000)); 
             if($this->Job_m->insert('job', $_POST['job'])){
                 $this->session->set_flashdata('job_success_page', 'Congratulations Job Posted Successfully');
@@ -174,7 +174,10 @@ Class Job extends CI_Controller{
         if($this->input->post('detail')){
             $_POST['user_id'] = user_meta('id');
             if(!$this->Job_m->query('select * from proposals where job_id = "'.$this->input->post('job_id').'" and user_id = "'.$_POST['user_id'].'"')){
+                $creater_id = $this->input->post('creater_id');
+                unset($_POST['creater_id']);
              if($this->Job_m->insert('proposals', $_POST)){
+                $this->Job_m->insert('notifications', array('type' => 1, 'url' => base_url('job/view/'.$this->input->post('job_slug').'?rel=buyer'), 'msg' => 'you have a new proposal', 'user_id' => $creater_id));
                 $this->session->set_flashdata('class', 'success');
                 $this->session->set_flashdata('proposal_success', 'Proposal has been submitted Successfully');
                redirect('job/detail/'.$this->input->post('job_slug'));
@@ -196,10 +199,15 @@ Class Job extends CI_Controller{
     }
     
     
-    public function posted_jobs(){
+    public function activity(){
+       $rel = $this->input->get('rel');
        $user_data = user_meta();
-       $posted_jobs =  $this->Job_m->get_posted_job();
-       $this->jobdesk->view('job/posted_jobs', compact('posted_jobs', 'user_data'));
+       if($rel == 'buyer'):
+           $posted_jobs =  $this->Job_m->get_posted_job();
+       else:
+           $posted_jobs =  $this->Job_m->get('job', 'assign_to', $user_data->id);
+       endif;
+       $this->jobdesk->view('job/posted_jobs', compact('posted_jobs', 'user_data', 'rel'));
     }
     
      /* ****** view posted ******* */
@@ -207,15 +215,38 @@ Class Job extends CI_Controller{
         $this->load->helper('text');
         if(!empty($_POST['user_id'])){
             $user_id = $_POST['user_id'];
+            $this->Job_m->insert('notifications', array('type' => 1, 'url' => base_url('job/view/'.$this->input->post('job_slug').'?rel=seller'), 'msg' => 'Your proposal has been accepted', 'user_id' => $user_id));
             $job_id = $_POST['job_id'];
             $this->Job_m->update('job', array('status' => 'ongoing', 'assign_to' => $user_id), 'id', $job_id);
         }
         if(!empty($slug)):
             $job = $this->Job_m->query('select * from job where slug = "'.$slug.'"');
-            $proposals = $this->Job_m->get_proposals($slug);
-            $this->jobdesk->view('job/view', compact('job', 'proposals'));
+            if(!empty($job)){
+                $id = user_meta('id');
+                if($job->assign_to == $id){ $rel = 'seller';}elseif($job->user_id == $id){$rel = 'buyer';}
+                $workstream = $this->Job_m->get_workstreams($job->id);
+                $this->Job_m->update('workstreams', ['is_read' => 1], 'job_id', $job->id );
+                $proposals = $this->Job_m->get_proposals($slug);
+                $this->jobdesk->view('job/view', compact('job', 'proposals', 'rel', 'workstream'));
+            }
         endif;
         
+    }
+    
+    public function workstream(){
+        if($this->input->post('sender') && $this->input->post('receiver')):
+            $this->Job_m->insert('workstreams', $_POST);
+        endif;
+        
+        if($this->input->post('receiver_id') && $this->input->post('job_id')):
+            $job_id = $this->input->post('job_id');
+            $reciever = $this->input->post('receiver_id');    
+            $workstream = $this->Job_m->query('select id, message from workstreams where job_id = "'.$job_id.'" and receiver = "'.$reciever.'" And is_read = 0 limit 1 ');
+            if(!empty($workstream)):
+                $this->Job_m->update('workstreams', ['is_read' => 1], 'id', $workstream->id);
+               die($workstream->message);
+            endif;
+        endif;
     }
     
 }

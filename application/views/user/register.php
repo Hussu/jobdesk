@@ -10,7 +10,7 @@
                     </a>
                 </div>
                 <div class="col-xs-6 col-sm-3">
-                    <a href="#" class="btn btn-lg btn-block omb_btn-twitter">
+                    <a href="<?php echo base_url('twitter/auth'); ?>" class="btn btn-lg btn-block omb_btn-twitter">
                         <i class="fa fa-twitter visible-xs"></i>
                         <span class="hidden-xs">Twitter</span>
                     </a>

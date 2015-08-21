@@ -22,6 +22,8 @@ class Jobdesk{
         } else {
             $folder = '';
         }
+
+        //print_r($_SESSION); die;
         $loader = $folder . $file;
 
         $header = $folder . "header";

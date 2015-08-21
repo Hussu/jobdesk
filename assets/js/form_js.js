@@ -288,7 +288,66 @@ jQuery(document).ready(function($){
 
              }
          })
+    });
+    
+    //**********workstream chat*************//
+    
+    $('#send_workstream').click(function (e) {
+        var m_names = new Array("Jan", "Feb", "Mar", 
+                        "Apr", "May", "Jun", "Jul", "Aug", "Sep", 
+                        "Oct", "Nov", "Dec");
+            var d = new Date();
+            var curr_date = d.getDate();
+            var curr_month = d.getMonth();
+            var curr_year = d.getFullYear();
+            
+            var msg = $('#workstream-textarea').val();
+            if(msg != ''){
+            var sender = $("input[name='sender']").val();
+            var receiver = $("input[name='receiver']").val();
+            var job_id = $("input[name='job_id']").val();
+            var html = '<div class="row"><div class="col-md-1">'+
+                            '<img src=" '+base_url+'assets/uploads/profile/'+user.profile_image+'" style="margin-top: 33px;" class="browse_job_user_img">'+
+                        '</div>'+
+                        '<div class="col-md-11">'+
+                            '<h6>'+curr_date+' '+m_names[curr_month]+' '+curr_year+'</h6>'+
+                            '<p id="othermsg" class="alert alert-success">'+msg+'</p>'+
+                        '</div></div>';
+            $('#workstream_thread').append(html);
+            $("#workstream_thread").scrollTop($("#workstream_thread")[0].scrollHeight);
+            $('#workstream-textarea').val('');
+            $.ajax({
+                type: 'post',
+                url: base_url+'job/workstream',
+                data: {'message': msg, 'sender': sender, 'receiver': receiver, 'job_id' : job_id},
+                success: function (result) {
+                    if (result == 'success') {
+                        
+                    }
+                }
+            })
+        }
     })
+    
+    //**********workstream auto chat*************//
+    
+//    setInterval(function () {
+//        var sender = $("input[name='sender']").val();
+//        var receiver = $("input[name='receiver']").val();
+//        var job_id = $("input[name='job_id']").val();
+//        $.ajax({
+//            type: 'post',
+//            url: base_url+'job/workstream',
+//            data: {'receiver_id': sender, 'job_id': job_id},
+//            success: function (result) {
+//                if (result) {
+//                    var ht = '<p class="pull-left alert alert-success" id="othermsg" >'+result+'</p>';
+//                    $('#workstream_thread').append(ht);
+//                    $("#workstream_thread").scrollTop($("#workstream_thread")[0].scrollHeight);
+//                }
+//            }
+//        })
+//    }, 2500)
     
 //------------------------------------------------------------//
 });

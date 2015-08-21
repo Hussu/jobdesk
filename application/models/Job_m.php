@@ -17,8 +17,10 @@ Class Job_m extends CI_Model{
     }
     
     public function insert($tablename, $data_array) {
+        //echo $tablename;
+       // print_r($data_array);
         if ($this->db->insert($tablename, $data_array)) {
-            $result = $this->db->insert_id();
+             $result = $this->db->insert_id();
         } else {
             $result = false;
         }
@@ -29,7 +31,6 @@ Class Job_m extends CI_Model{
         $id = user_meta('id');
         $this->db->select("job.*, users.first_name, users.last_name, users.profile_image, users.address, users.id as user_id");
         $this->db->from('job');
-        $this->db->where('job.assign_to', 0);
 //        $this->db->join('proposals', 'proposals.job_id = job.id');
         $this->db->join('users', 'job.user_id = users.id');
         $this->db->order_by('job.id', 'DESC');
@@ -103,6 +104,19 @@ Class Job_m extends CI_Model{
          } 
     }
     
+    public function get_worked_job(){
+        $this->db->where('assign_to', user_meta('id'));
+        $this->db->order_by('id', 'DESC');
+        $query = $this->db->get('job');
+        $result = $query->result_object();
+         if(!empty($result)){
+             return  $result;
+             
+         }else{
+             return false;
+         } 
+    }
+    
      public function get_proposals($slug){
          $this->db->select("proposals.*, users.first_name, users.last_name, users.profile_image, users.address, users.id as user_id");
          $this->db->from('proposals');
@@ -132,6 +146,35 @@ Class Job_m extends CI_Model{
         } else {
             $result = false;
         }
+        return $result;
+    }
+    
+      public function get($tablename, $where_key = '', $where_val = '', $array = false) {
+        if (!empty($where_key) && !empty($where_val)) {
+            $this->db->where($where_key, $where_val);
+        }
+
+        $q = $this->db->get($tablename);
+
+        if ($q->num_rows() > 0) {
+            if($array == true) {
+              $result = $q->row_array();
+            }else {
+              $result = $q->result_object();
+            }
+        } else {
+            $result = false;
+        }
+        return $result;
+    }
+    
+    public function get_workstreams($job_id){
+        $this->db->select('users.profile_image,  workstreams.*');
+        $this->db->from('workstreams');
+        $this->db->join('users', 'users.id = workstreams.sender');
+        $this->db->where('workstreams.job_id', $job_id);
+        $query = $this->db->get();
+        $result = $query->result_object();
         return $result;
     }
     

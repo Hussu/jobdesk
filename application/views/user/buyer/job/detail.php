@@ -32,7 +32,7 @@
                     <p><strong>Experience Level :</strong> <?php if($job->level == 1){ echo 'Entry level'; }elseif($job->level == 2){ echo 'Intermediate Level' ;}elseif($job->level == 3){echo 'Exper Level'; } ?><p>
                     <p><strong>Estimated Job duration :</strong> Ongoing</p>
                     
-                    <p>
+                    <p style="white-space:pre-line">
                         <?php echo $job->description; ?>
                     </p>
                     <h3 id="send_proposal">New Proposal</h3>
@@ -40,17 +40,18 @@
                     <form method="post" action="<?php echo base_url('job/detail/') ?>">
                         <div class="form-group">
                             <label for="detail">ENTER YOUR PROPOSAL DETAILS</label>
-                            <textarea id="detail" name="detail" class="form-control" placeholder="Provide general info about your proposal e.g. what you can deliver and when, why you think you can do the job etc."></textarea>
+                            <textarea id="detail" required='' name="detail" class="form-control" placeholder="Provide general info about your proposal e.g. what you can deliver and when, why you think you can do the job etc."></textarea>
                         </div>
                         <div class="form-group col-md-4">
                             <label for="detail">Amount</label>
-                            <input type="text" name="amount" id="detail" class="form-control" placeholder="$ 0.00">
+                            <input type="text" required='' name="amount" id="detail" class="form-control" placeholder="$ 0.00">
                         </div>
                         <input type="hidden" name="job_id" value="<?php echo $job->id ?>" >
+                        <input type="hidden" name="creater_id" value="<?php echo $job->user_id ?>" >
                         <input type="hidden" name="job_slug" value="<?php echo $job->slug ?>" >
                         <div class="form-group col-md-4">
                             <label for="detail">Deposit</label>
-                            <input type="text" id="detail" class="form-control" placeholder="$ 0.00" name="deposit">
+                            <input type="text" required='' id="detail" class="form-control" placeholder="$ 0.00" name="deposit">
                         </div>
                         
                           <div class="form-group col-md-4">

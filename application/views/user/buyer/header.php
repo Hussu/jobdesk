@@ -32,6 +32,10 @@
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="<?php echo assets_path() ?>/images/ico/apple-touch-icon-114-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="<?php echo assets_path() ?>/images/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="<?php echo assets_path() ?>/images/ico/apple-touch-icon-57-precomposed.png">
+    <script>
+        var user = jQuery.parseJSON('<?php echo json_encode(user_meta()) ?>');
+        var base_url = '<?php echo base_url(); ?>';
+    </script>
 </head><!--/head-->
 
 <body class="homepage">
@@ -86,33 +90,45 @@
 				
                 <div class="collapse navbar-collapse navbar-right">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="<?php echo base_url() ?>">HOME</a></li>
                         <li><a href="<?php echo base_url('buy') ?>">BUY</a></li>
                         <li><a href="<?php echo base_url('job/browse') ?>">SELL</a></li>
-                        <li><a href="<?php echo base_url('works') ?>">HOW IT WORKS</a></li>
                         <li><a href="<?php echo base_url('job/post') ?>" class="btn btn-default color-black">POST JOB</a></li> 
+                        <li> 
+                            <?php $this->load->helper('notification');   $html = get_message();
+                            $total =  !empty($html['total']) ? '('.$html['total'].')' : ''; 
+                            ?>
+                            <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Message <?php echo $total ?></a>
+                            <ul class="dropdown-menu notification_ul" style="width:350px">
+                                <?php echo $html['html'] ?>
+                            </ul>
+                        </li>
+                         <li> 
+                            <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="glyphicon glyphicon-bell" style="color:white" aria-hidden="true"></span>
+                            </a>
+                            <?php $this->load->helper('notification');   $html = get_notification(); ?>
+                            <ul class="dropdown-menu notification_ul">
+                                <?php echo $html ?>
+                            </ul>
+                        </li>
                         <?php
                           $user_id = is_logged_in();
                           if($user_id) { 
                               ?>
-                            
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Hi <?php echo user_meta('first_name') ?> <i class="fa fa-angle-down"></i></a>
                                 <ul class="dropdown-menu dashboard_dropdown">
                                     <li><a href="<?php echo base_url('/dashboard') ?>"><i class="fa fa-tachometer"></i>DASHBOARD</a></li>
                                     <li><a href="<?php echo base_url('/profile') ?>"><i class="fa fa-user"></i>PROFILE</a></li>
                                     <li><a href="404.html"><i class="fa fa-credit-card"></i>PAYMENT</a></li>
-                                    <li><a href="<?php echo base_url('job/posted_jobs') ?>"><i class="fa fa-user"></i>MY BUYER ACTIVITY</a></li>
-                                    <li><a href="shortcodes.html"><i class="fa fa-user"></i>MY SELLER ACTIVITY</a></li>
+                                    <li><a href="<?php echo base_url('job/activity?rel=buyer') ?>"><i class="fa fa-user"></i>MY BUYER ACTIVITY</a></li>
+                                    <li><a href="<?php echo base_url('job/activity?rel=seller') ?>"><i class="fa fa-user"></i>MY SELLER ACTIVITY</a></li>
                                     <li><a href="shortcodes.html"><i class="fa fa-gear"></i>SETTING</a></li>
                                     <li><a href="<?php echo base_url('user/logout') ?>"><i class="fa fa-power-off"></i>LOGOUT</a></li> 
                                     <li><a href=""><i class="fa fa-phone"></i>CUSTOMER SSUPPORT</a></li> 
                                     <li><a href=""><i class="fa fa-question"></i>HOW IT WORKS</a></li> 
                                 </ul>
                             </li>
-                            
-                            
-                            
                           <?php } else{ ?>
                             <li><a href="<?php echo base_url('user/register') ?>">SIGN UP</a></li>
                             <li><a href="<?php echo base_url('user/login') ?>">LOG IN</a></li>                        
@@ -124,4 +140,6 @@
 		
     </header><!--/header-->
 
-    
+
+ 
+

@@ -6,6 +6,7 @@ class User extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->library('form_validation');
+
     }
     public function account()
     {
@@ -13,6 +14,9 @@ class User extends CI_Controller {
     }
 
     public function register() {
+         if(is_logged_in()){
+                redirect('dashboard');
+         }
         $this->load->library('facebook');
         $act = $this->uri->segment(3);
         switch ($act) {
@@ -26,6 +30,7 @@ class User extends CI_Controller {
                    $this->jobdesk->view('user/register', $data);
                 }else{
                 unset($_POST['confirm_password']);
+                $_POST['role'] = 3;
                 $_POST['password'] = md5($this->input->post('password'));
                 if ($result = $this->global_m->insert('users', $_POST)) {
                     $sess_array = array(
@@ -72,7 +77,7 @@ class User extends CI_Controller {
             $sess_array = array();
             if ($result) {
                 $sess_array = array(
-                    'jodbesk_id' => $result->id,
+                    'jobdesk_id' => $result->id,
                     'username' => $result->first_name . ' ' . $result->last_name,
                     'email' => $result->email,
                     'role' => $result->role

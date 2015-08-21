@@ -18,7 +18,7 @@ function validate_login() {
                     'redirect_uri' => site_url('user/register/facebook'),
                     'scope' => array("email") // permissions here
                 ));
-    $user_id = $ci->session->userdata('jodbesk_id');
+    $user_id = $ci->session->userdata('jobdesk_id');
     if(empty($user_id)):
         $user_id = !empty($_COOKIE['logined']) ? $_COOKIE['logined'] : '';
     endif;
@@ -62,7 +62,7 @@ function role(){
 
 function user_meta($key = ''){
     $ci = & get_instance();
-    $id = $ci->session->userdata('jodbesk_id');
+    $id = $ci->session->userdata('jobdesk_id');
     if(empty($id)):
         $id = isset($_COOKIE['logined']) ? $_COOKIE['logined'] : '' ;
     endif;
@@ -88,7 +88,8 @@ function user_meta($key = ''){
 
 function is_logged_in() {
     $ci = & get_instance();
-    $id = $ci->session->userdata('jodbesk_id');
+    $id = $ci->session->userdata('jobdesk_id');
+    //print_r($_SESSION);
     if(empty($id)):
         $id = isset($_COOKIE['logined']) ? $_COOKIE['logined'] : '' ;
     endif;
@@ -113,7 +114,7 @@ function validate_role() {
 // Validate login
 function validate_login2() {
     $ci = & get_instance();
-    $user_id = $ci->session->userdata('jodbesk_id');
+    $user_id = $ci->session->userdata('jobdesk_id');
     echo $user_name = $ci->session->userdata('user_name');
     if (isset($user_name) && !empty($user_name)) {
         redirect('admin/home');
@@ -209,6 +210,27 @@ function total_proposals($id){
     return $ci->db->count_all_results();
 //    echo $ci->db->last_query(); die;
     
+}
+
+function job_data($key, $val, $get = ''){
+    $ci = & get_instance();
+    $ci->db->where($key, $val);
+    if(!empty($get)):
+        $gets = is_array($get)? implode(',', $get):$get;
+        $ci->db->select($gets);
+    endif;
+    $data  = $ci->db->get('job');
+    $result = $data->result_object();
+    if(!empty($get)):
+        if(!empty($result)):
+           return $result[0];
+        endif;
+    else:
+        if(!empty($result)):
+            return $result[0];
+        endif;
+    endif;
+     
 }
     
 function get_user_data($id, $key  = ''){
